@@ -166,7 +166,11 @@ void GLTextRenderer::generate_glyphs_texture()
     const int cropped_bitmap_height = real_ascent - real_descent;
 
     for (p = reinterpret_cast<const unsigned char*>(text); *p; p++) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         const int advance_x     = g.horizontalAdvance(*p);
+#else
+        const int advance_x     = g.width(*p);
+#endif
         const int bitmap_height = g.height();
 
         text_texture_advances[*p][0] = advance_x;
@@ -194,8 +198,11 @@ void GLTextRenderer::generate_glyphs_texture()
 
     int x = 0;
     for (p = reinterpret_cast<const unsigned char*>(text); *p; p++) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         const int advance_x = g.horizontalAdvance(*p);
-
+#else
+        const int advance_x = g.width(*p);
+#endif
         text_texture_offsets[*p][0] = x + border_size;
         text_texture_offsets[*p][1] = real_descent + border_size;
 
