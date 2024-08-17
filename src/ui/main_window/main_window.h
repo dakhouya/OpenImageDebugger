@@ -155,6 +155,10 @@ class MainWindow final : public QMainWindow
 
     void rotate_90_ccw();
 
+    void shift_precision_left();
+
+    void shift_precision_right();
+
     void buffer_selected(QListWidgetItem* item);
 
     void remove_selected_buffer();

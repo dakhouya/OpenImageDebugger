@@ -45,7 +45,7 @@ class BufferValues final : public Component
     [[nodiscard]] int render_index() const override;
 
     void draw(const mat4& projection, const mat4& view_inv) override;
-
+    int floatPrecision = 3;
   private:
     float text_pixel_scale         = 1.0f;
     static float constexpr padding = 0.125f; // Must be smaller than 0.5

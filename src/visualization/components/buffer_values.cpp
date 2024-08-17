@@ -63,12 +63,13 @@ inline void pix2str(const BufferType& type,
                     const int& pos,
                     const int& channel,
                     const int label_length,
+                    const int floatPrecision,
                     char* pix_label)
 {
     if (type == BufferType::Float32 || type == BufferType::Float64) {
         const float fpix =
             reinterpret_cast<const float*>(buffer)[pos + channel];
-        snprintf(pix_label, label_length, "%.3f", fpix);
+        snprintf(pix_label, label_length, "%.*f", floatPrecision, fpix);
         if (string{pix_label}.length() > 7) {
             snprintf(pix_label, label_length, "%.3e", fpix);
         }
@@ -171,7 +172,7 @@ void BufferValues::draw(const mat4& projection, const mat4& view_inv)
                     const float y_off = (0.5f * (channels - 1) - c) / channels -
                                         recenter_factors[c];
 
-                    pix2str(type, buffer, pos, c, label_length, pix_label);
+                    pix2str(type, buffer, pos, c, label_length, floatPrecision, pix_label);
                     draw_text(projection,
                               view_inv,
                               buffer_pose,

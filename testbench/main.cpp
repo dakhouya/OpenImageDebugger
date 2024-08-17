@@ -338,16 +338,16 @@ class Test : public TestFather
         broken.rows        = 1024;
         broken.step.buf[2] = 3;
         broken.release();
-        ones<uint8_t>(W, H, C, TestField);
+        ones<float>(W, H, C, TestField);
         i(0, 0, 0) = 255;
         i(0, 0, 1) = 0;
         i(0, 0, 2) = 0;
         C          = 1;
-        ones<uint8_t>(W, H, C, TestField);
+        ones<float>(W, H, C, TestField);
         i(0, 0, 0) = 255;
         for(int i = 0; i < 20; ++i) {
             float offset = i / 20.0f * M_PI * 4.f;
-            doSimpleCalculation<uint8_t>(W, H, C, offset, TestField);
+            doSimpleCalculation<float>(W, H, C, offset, TestField);
             changeStackOnPurpose();
             usleep(1 * 1e6);
             cout << "iteration done"<<endl;

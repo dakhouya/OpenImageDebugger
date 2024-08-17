@@ -32,7 +32,7 @@
 #include "ui_main_window.h"
 #include "visualization/components/camera.h"
 #include "visualization/game_object.h"
-
+#include "visualization/components/buffer_values.h"
 
 using namespace std;
 
@@ -175,6 +175,55 @@ void MainWindow::link_views_toggle()
     link_views_enabled_ = !link_views_enabled_;
 }
 
+void MainWindow::shift_precision_left()
+{
+    const auto shift_precision_left = [](Stage* stage) {
+        GameObject* buffer_obj = stage->get_game_object("buffer");
+        auto* buffer_comp =
+            buffer_obj->get_component<BufferValues>("text_component");
+
+        if (buffer_comp->floatPrecision > 0) {
+            buffer_comp->floatPrecision--;
+        }
+    };
+
+    if (link_views_enabled_) {
+        for (auto& [_, stage] : stages_) {
+            shift_precision_left(stage.get());
+        }
+    } else {
+        if (currently_selected_stage_ != nullptr) {
+            shift_precision_left(currently_selected_stage_);
+        }
+    }
+
+    request_render_update_ = true;
+}
+
+void MainWindow::shift_precision_right()
+{
+    const auto shift_precision_right = [](Stage* stage) {
+        GameObject* buffer_obj = stage->get_game_object("buffer");
+        auto* buffer_comp =
+            buffer_obj->get_component<BufferValues>("text_component");
+
+        if (buffer_comp->floatPrecision < 10) {
+            buffer_comp->floatPrecision++;
+        }
+    };
+
+    if (link_views_enabled_) {
+        for (auto& [_, stage] : stages_) {
+            shift_precision_right(stage.get());
+        }
+    } else {
+        if (currently_selected_stage_ != nullptr) {
+            shift_precision_right(currently_selected_stage_);
+        }
+    }
+
+    request_render_update_ = true;
+}
 
 void MainWindow::rotate_90_cw()
 {
